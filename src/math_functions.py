@@ -1,5 +1,5 @@
 import numpy as np
-from data_stats import value_per_attribute
+from data_stats import value_per_attribute, get_unique_values
 
 
 def entropy_from_counts(value_frequency: dict) -> float:
@@ -26,7 +26,7 @@ def info_attribute(data: np.ndarray) -> dict[int, float]:
 
     for attribute_index in range(num_columns - 1):
         column_values = data[:, attribute_index]
-        unique_values = set(column_values)
+        unique_values = get_unique_values(column_values)
 
         weighted_entropy = 0.0
         for attribute_value in unique_values:

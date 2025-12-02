@@ -1,6 +1,8 @@
+import numpy as np
 from load_data import load_data
 from data_stats import count_unique_values, value_per_attribute
-from entropy import (
+from DecisionTree import DecisionTree
+from math_functions import (
     entropy,
     info_attribute,
     gain,
@@ -8,10 +10,7 @@ from entropy import (
     gain_ratio,
 )
 
-
-if __name__ == "__main__":
-    data = load_data("data/car.data", separator=",", headline=False)
-
+def check_math_functions(data: np.array) -> None:
     print("Data:")
     print(data)
     print("dtype:", data.dtype)
@@ -62,3 +61,31 @@ if __name__ == "__main__":
 
     print("Best attribute by GainRatio:")
     print(f"  a{best_gr_attr + 1} -> {gr[best_gr_attr]}")
+
+def check_decision_tree(data: np.array) -> None:
+    tree = DecisionTree()
+    tree.fit(data)
+
+    new_car_1 = np.array(['low', 'low', '5more', 'more', 'big', 'high'])
+    new_car_2 = np.array(['vhigh', 'vhigh', '2', '2', 'small', 'low'])
+
+    col_names = [
+        "buying price",
+        "maintenance cost",
+        "doors count",
+        "persons capacity",
+        "luggage boot size",
+        "estimated safety"
+    ]
+
+    print("\n--- TREE VISUALIZATION ---\n")
+    tree.print_tree(attribute_names=col_names)
+
+    print("Perfect car test:", tree.predict(new_car_1))
+    print("Worst car test:", tree.predict(new_car_2))
+
+if __name__ == "__main__":
+    dataset = load_data("data/car.data", separator=",", headline=False)
+
+    #check_math_functions(dataset)
+    check_decision_tree(dataset)
